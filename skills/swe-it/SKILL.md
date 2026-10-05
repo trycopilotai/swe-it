@@ -50,7 +50,10 @@ python3 scripts/swe_it.py contract \
 ```
 
    `<contract-json>` is a file outside the target repo; the
-   later steps read it. `scripts/swe_it.py`, here and below,
+   later steps read it. Default to
+   `${TMPDIR:-/tmp}/swe-it/<plan-stem>/contract.json`, where
+   `<plan-stem>` is the plan file's name without its
+   extension; a path the operator chooses is fine too. `scripts/swe_it.py`, here and below,
    is relative to this skill's directory, not to the target
    repo.
 

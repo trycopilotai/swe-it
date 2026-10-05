@@ -21,7 +21,9 @@ tests can inspect it without reparsing prose.
 - `target_surfaces`: Primary files, directories, or
   subsystems named by the plan.
 - `off_limits`: Files, directories, systems, or behaviors
-  the plan says not to touch.
+  the plan says not to touch. Entries keep the backticks of
+  the plan text (`` `Makefile` ``), while `target_surfaces`
+  strips them.
 - `candidate_lanes`: Proposed lane objects. Each lane has a
   `label`, `title`, `days`, `target_surfaces`,
   `validation_commands`, and `dependencies`.
