@@ -32,7 +32,7 @@
   },
   "output": {
     "path": "evidence/transcripts/contract-session.txt",
-    "sha256": "8a3024c2faca6dd01ef3a535100550d1cb957df98c56ece9ef87223bf82c40bd",
+    "sha256": "4645f925926f8da662a978c2a947b7a44c46ea384ed1e623d5e5f766921332a9",
     "edited": true,
     "transforms": [
       {
