@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="960" viewBox="0 0 1280 960" role="img" aria-labelledby="title description">
+  <title id="title">Animated swe-it contract session</title>
+  <desc id="description">A terminal builds a swe-it contract from a plan with no validation section and gets the mode needs_human, appends a validation command, gets a banner that says to dispatch a solo swe-day, and the clean-HEAD verifier exits with status 1.</desc>
+  <style>
+    .step-1 {
+      opacity: 0;
+      animation: reveal-1 16s infinite;
+    }
+    @keyframes reveal-1 {
+      0%, 4% { opacity: 0; }
+      8%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-2 {
+      opacity: 0;
+      animation: reveal-2 16s infinite;
+    }
+    @keyframes reveal-2 {
+      0%, 15% { opacity: 0; }
+      19%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-3 {
+      opacity: 0;
+      animation: reveal-3 16s infinite;
+    }
+    @keyframes reveal-3 {
+      0%, 26% { opacity: 0; }
+      30%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-4 {
+      opacity: 0;
+      animation: reveal-4 16s infinite;
+    }
+    @keyframes reveal-4 {
+      0%, 37% { opacity: 0; }
+      41%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-5 {
+      opacity: 0;
+      animation: reveal-5 16s infinite;
+    }
+    @keyframes reveal-5 {
+      0%, 48% { opacity: 0; }
+      52%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-6 {
+      opacity: 0;
+      animation: reveal-6 16s infinite;
+    }
+    @keyframes reveal-6 {
+      0%, 59% { opacity: 0; }
+      63%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-7 {
+      opacity: 0;
+      animation: reveal-7 16s infinite;
+    }
+    @keyframes reveal-7 {
+      0%, 70% { opacity: 0; }
+      74%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .step-8 {
+      opacity: 0;
+      animation: reveal-8 16s infinite;
+    }
+    @keyframes reveal-8 {
+      0%, 81% { opacity: 0; }
+      85%, 94% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .step-1, .step-2, .step-3, .step-4, .step-5, .step-6, .step-7, .step-8 {
+        opacity: 1;
+        animation: none;
+      }
+    }
+  </style>
+  <rect width="1280" height="960" rx="24" fill="#101418" />
+  <circle cx="40" cy="44" r="9" fill="#ff6b6b" />
+  <circle cx="70" cy="44" r="9" fill="#ffd166" />
+  <circle cx="100" cy="44" r="9" fill="#55d6be" />
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">
+    <text x="40" y="108" fill="#f7fbff" xml:space="preserve">$ swe() { python3 skills/swe-it/scripts/swe_it.py &quot;$@&quot;; }</text>
+    <g class="step-1">
+      <text x="40" y="148" fill="#f7fbff" xml:space="preserve">$ cat plans/greeting.md</text>
+      <text x="40" y="174" fill="#f7fbff" xml:space="preserve"># Add a greeting</text>
+      <text x="40" y="200" fill="#f7fbff" xml:space="preserve">## Success Criteria</text>
+      <text x="40" y="226" fill="#f7fbff" xml:space="preserve">- `greeting.py` prints a greeting.</text>
+      <text x="40" y="252" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-2">
+      <text x="40" y="292" fill="#f7fbff" xml:space="preserve">$ swe contract --plan plans/greeting.md --repo repo --out state/swe-it.json</text>
+      <text x="40" y="318" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-3">
+      <text x="40" y="358" fill="#f7fbff" xml:space="preserve">$ grep -o &#x27;&quot;mode&quot;: &quot;[a-z0-9_]*&quot;&#x27; state/swe-it.json</text>
+      <text x="40" y="384" fill="#ffd166" xml:space="preserve">&quot;mode&quot;: &quot;needs_human&quot;</text>
+      <text x="40" y="410" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-4">
+      <text x="40" y="450" fill="#f7fbff" xml:space="preserve">$ swe prompts --contract state/swe-it.json</text>
+      <text x="40" y="476" fill="#f7fbff" xml:space="preserve"># swe-it needs human input: Add a greeting</text>
+      <text x="40" y="502" fill="#ffd166" xml:space="preserve">Execution dispatch is blocked.</text>
+      <text x="40" y="528" fill="#f7fbff" xml:space="preserve">## Blocking Questions</text>
+      <text x="40" y="554" fill="#ffd166" xml:space="preserve">- missing validation commands</text>
+      <text x="40" y="580" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-5">
+      <text x="40" y="620" fill="#f7fbff" xml:space="preserve">$ printf &#x27;\n## Validation\n\n- python3 greeting.py\n&#x27; &gt;&gt; plans/greeting.md</text>
+      <text x="40" y="646" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-6">
+      <text x="40" y="686" fill="#f7fbff" xml:space="preserve">$ swe contract --plan plans/greeting.md --repo repo --out state/swe-it.json</text>
+      <text x="40" y="712" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-7">
+      <text x="40" y="752" fill="#f7fbff" xml:space="preserve">$ swe next --state-dir state</text>
+      <text x="40" y="778" fill="#f7fbff" xml:space="preserve">▶ swe-it READY · Add a greeting · dispatch solo swe-day</text>
+      <text x="40" y="804" fill="#55d6be" xml:space="preserve">exit status: 0</text>
+    </g>
+    <g class="step-8">
+      <text x="40" y="844" fill="#f7fbff" xml:space="preserve">$ swe verify --contract state/swe-it.json</text>
+      <text x="40" y="870" fill="#ffd166" xml:space="preserve">exit status: 1</text>
+    </g>
+  </g>
+  <text x="40" y="932" fill="#a7bac5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">Reconstructed from evidence/transcripts/contract-session.txt</text>
+</svg>

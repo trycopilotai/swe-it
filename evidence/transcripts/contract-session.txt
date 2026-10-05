@@ -1,0 +1,63 @@
+$ swe() { python3 skills/swe-it/scripts/swe_it.py "$@"; }
+$ cat plans/greeting.md
+# Add a greeting
+
+## Success Criteria
+
+- `greeting.py` prints a greeting.
+$ echo "exit status: $?"
+exit status: 0
+$ swe contract --plan plans/greeting.md --repo repo --out state/swe-it.json
+$ echo "exit status: $?"
+exit status: 0
+$ grep -o '"mode": "[a-z0-9_]*"' state/swe-it.json
+"mode": "needs_human"
+$ echo "exit status: $?"
+exit status: 0
+$ swe prompts --contract state/swe-it.json
+# swe-it needs human input: Add a greeting
+
+Execution dispatch is blocked.
+
+## Blocking Questions
+- missing validation commands
+$ echo "exit status: $?"
+exit status: 0
+$ printf '\n## Validation\n\n- python3 greeting.py\n' >> plans/greeting.md
+$ echo "exit status: $?"
+exit status: 0
+$ swe contract --plan plans/greeting.md --repo repo --out state/swe-it.json
+$ echo "exit status: $?"
+exit status: 0
+$ swe next --state-dir state
+▶ swe-it READY · Add a greeting · dispatch solo swe-day
+$ echo "exit status: $?"
+exit status: 0
+$ swe verify --contract state/swe-it.json
+{
+  "passed": false,
+  "repo_root": "/work/repo",
+  "head": "96728d6dd3088266ba984a5a4b4a51e9237d7c60",
+  "worktree_path": "/work/tmp/swe-it-verify-3zio7_xf/head",
+  "worktree_removed": true,
+  "commands": [
+    {
+      "source": "validation",
+      "command": "python3 greeting.py",
+      "exit_code": 2,
+      "passed": false,
+      "stdout_tail": "",
+      "stderr_tail": "python3: can't open file '/work/tmp/swe-it-verify-3zio7_xf/head/greeting.py': [Errno 2] No such file or directory\n",
+      "summary": "python3: can't open file '/work/tmp/swe-it-verify-3zio7_xf/head/greeting.py': [Errno 2] No such file or directory"
+    }
+  ],
+  "failure_summaries": [
+    "python3 greeting.py: python3: can't open file '/work/tmp/swe-it-verify-3zio7_xf/head/greeting.py': [Errno 2] No such file or directory"
+  ],
+  "submodules_initialized": false,
+  "required_submodules": [],
+  "setup_error": "",
+  "cleanup_error": ""
+}
+$ echo "exit status: $?"
+exit status: 1

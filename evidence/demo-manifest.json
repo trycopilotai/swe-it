@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-04",
+  "skill": {
+    "path": "skills/swe-it/SKILL.md",
+    "sha256": "8d05fee94369e06f5a1cdac7e950501527c9b713dcae5a177041a74490c5fa3a"
+  },
+  "programs": [
+    {
+      "path": "skills/swe-it/scripts/swe_it.py",
+      "sha256": "f655871f620f836a4ad5128348a9b8270ef80b406ce7475b8f269eb396bdd20f"
+    }
+  ],
+  "agent": {
+    "invoked_the_skill": false,
+    "note": "No agent session executed a plan to produce this evidence. scripts/record_session.py ran the commands while this release was being prepared."
+  },
+  "invocation": {
+    "commands": [
+      "swe() { python3 skills/swe-it/scripts/swe_it.py \"$@\"; }",
+      "cat plans/greeting.md",
+      "swe contract --plan plans/greeting.md --repo repo --out state/swe-it.json",
+      "grep -o '\"mode\": \"[a-z0-9_]*\"' state/swe-it.json",
+      "swe prompts --contract state/swe-it.json",
+      "printf '\\n## Validation\\n\\n- python3 greeting.py\\n' >> plans/greeting.md",
+      "swe contract --plan plans/greeting.md --repo repo --out state/swe-it.json",
+      "swe next --state-dir state",
+      "swe verify --contract state/swe-it.json"
+    ],
+    "interpreter": "Python 3.13.13",
+    "working_directory": "a throwaway directory holding a copy of skills/, the plan plans/greeting.md written by scripts/record_session.py, empty state/, tmp/ and home/ directories, bin/python3 linked to the recording interpreter, and a git repository named repo with one empty commit and one uncommitted file, greeting.py. Each command ran in its own bash -c with PATH set to bin, /usr/bin and /bin, TMPDIR set to tmp/, HOME set to home/, no git configuration files, and the git identity Example <test@example.com>."
+  },
+  "output": {
+    "path": "evidence/transcripts/contract-session.txt",
+    "sha256": "e6fffdcadca77b676cc8b314c536cbb34451413444cfb33be7fdc7bc4ecfab42",
+    "edited": true,
+    "transforms": [
+      {
+        "name": "replace-capture-root",
+        "what": "The absolute path of the throwaway capture directory was replaced with /work by one string replacement in scripts/record_session.py. Nothing else was changed."
+      }
+    ],
+    "note": "scripts/record_session.py ran each command in its own bash -c and, after it finished, wrote the command line, the command's output, and an exit status line built from its exit status. The echo lines were written by the recorder, not run."
+  }
+}

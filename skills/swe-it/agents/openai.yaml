@@ -1,0 +1,7 @@
+interface:
+  display_name: "swe-it"
+  short_description:
+    "Execute plans with clean-HEAD verification"
+  default_prompt:
+    "Use $swe-it to execute this approved plan end to end
+    through the right SWE or m2 route."
