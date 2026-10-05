@@ -717,7 +717,7 @@ python3 -m unittest
         )
         contract = MODULE.build_contract(plan, "/repo", "D99")
         self.assertEqual(contract["mode"], "needs_human")
-        self.assertIn("Do not edit `src/secret.py`.", contract["off_limits"])
+        self.assertIn("Do not edit src/secret.py.", contract["off_limits"])
         self.assertEqual(
             contract["validation_commands"],
             ["python3 -m unittest", "pytest"],
@@ -771,6 +771,92 @@ python3 -m unittest
         duplicate_contract = MODULE.build_contract(duplicate_plan, "/repo", None)
         labels = [row["label"] for row in duplicate_contract["timeline"]]
         self.assertEqual(labels, ["D01"])
+
+    def test_status_line_is_not_a_human_gate(self) -> None:
+        plan = self._plan_file(
+            """# Add a flag
+
+Status: approved.
+
+## Success Criteria
+
+- The flag works.
+
+## Validation
+
+- make check
+
+## Human Gates
+
+- Approval from operator is needed.
+"""
+        )
+        contract = MODULE.build_contract(plan, "/repo", None)
+        self.assertEqual(
+            contract["human_gates"], ["Approval from operator is needed."]
+        )
+        self.assertEqual(contract["mode"], "solo")
+        self.assertEqual(
+            MODULE._extract_human_gates(
+                "Status: approved.\n"
+                "- **Status:** awaiting approval\n"
+                "status: approved\n"
+                "## Status: approved\n"
+                "- Human gate required before execution.\n"
+            ),
+            ["Human gate required before execution."],
+        )
+
+    def test_validation_heading_is_not_success_criteria(self) -> None:
+        plan = self._plan_file(
+            """# Add a flag
+
+## Success Criteria
+
+- The flag works.
+
+## Validation
+
+- `make check`
+"""
+        )
+        contract = MODULE.build_contract(plan, "/repo", None)
+        self.assertEqual(contract["success_criteria"], ["The flag works."])
+        self.assertEqual(contract["validation_commands"], ["make check"])
+        self.assertEqual(contract["mode"], "solo")
+
+        validation_only = self._plan_file(
+            """# Add a flag
+
+## Validation
+
+- make check
+"""
+        )
+        contract = MODULE.build_contract(validation_only, "/repo", None)
+        self.assertEqual(contract["success_criteria"], [])
+        self.assertEqual(contract["validation_commands"], ["make check"])
+        self.assertEqual(contract["mode"], "needs_human")
+        self.assertEqual(
+            contract["blocking_questions"],
+            ["missing success or acceptance criteria"],
+        )
+
+    def test_off_limits_strips_backticks(self) -> None:
+        plan = self._plan_file(
+            """# Add a flag
+
+## Off limits
+
+- `Makefile`
+- Do not edit `src/secret.py` or `docs/`.
+"""
+        )
+        contract = MODULE.build_contract(plan, "/repo", None)
+        self.assertEqual(
+            contract["off_limits"],
+            ["Makefile", "Do not edit src/secret.py or docs/."],
+        )
 
     def test_selector_and_json_errors(self) -> None:
         with self.assertRaises(SystemExit):

@@ -41,6 +41,7 @@ REMOTE_REF_RE = re.compile(
     r"[A-Za-z0-9_.-]+/[^\s`<>)]+|"
     r"(?<![\w@.-])www\.[A-Za-z0-9.-]+\.[A-Za-z]{2,}/[^\s`<>)]+"
 )
+STATUS_LINE_RE = re.compile(r"status\s*\**\s*:")
 D_LABEL_RE = re.compile(r"\bD(\d{1,3})\b", re.IGNORECASE)
 DATE_RE = re.compile(
     r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?"
@@ -192,7 +193,7 @@ def _bullet_text(line: str) -> str | None:
 
 def _extract_success_criteria(sections: dict[str, list[str]]) -> list[str]:
     criteria: list[str] = []
-    names = ("success", "acceptance", "criteria", "test plan", "validation")
+    names = ("success", "acceptance", "criteria", "test plan")
     for name, lines in sections.items():
         if not any(token in name for token in names):
             continue
@@ -212,7 +213,7 @@ def _extract_off_limits(sections: dict[str, list[str]]) -> list[str]:
         for line in lines:
             bullet = _bullet_text(line)
             if bullet:
-                values.append(bullet)
+                values.append(_collapse(bullet.replace("`", "")))
     return _dedupe(values)
 
 
@@ -340,6 +341,8 @@ def _extract_human_gates(text: str) -> list[str]:
         if not gate_text:
             continue
         lower = gate_text.lower()
+        if STATUS_LINE_RE.match(lower):
+            continue
         if "human gate" in lower or "operator-gated" in lower:
             gates.append(_collapse(gate_text))
         elif "approval" in lower or "approve" in lower:

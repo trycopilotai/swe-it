@@ -3,12 +3,12 @@
   "date": "2026-10-04",
   "skill": {
     "path": "skills/swe-it/SKILL.md",
-    "sha256": "f24a75a853a58ee6b036223ec5a5d968da8c1a88bbd9a4ba1cb64f2d4bff5c39"
+    "sha256": "d956bf6026d80803f6767c2ea1b703bf94351adf27368f37331219a95d1a7dd0"
   },
   "programs": [
     {
       "path": "skills/swe-it/scripts/swe_it.py",
-      "sha256": "f655871f620f836a4ad5128348a9b8270ef80b406ce7475b8f269eb396bdd20f"
+      "sha256": "05b98f2825cda80bdfc2e123fd35bb3d87ac8ff83a4a811d398736c3aa6d7b05"
     }
   ],
   "agent": {

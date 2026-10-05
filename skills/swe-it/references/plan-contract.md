@@ -16,14 +16,14 @@ tests can inspect it without reparsing prose.
 - `work_item`: Short human-readable title for the execution
   run.
 - `success_criteria`: List of acceptance or completion
-  statements.
+  statements. Bullets under a `Validation` heading are not
+  copied here; their commands go to `validation_commands`.
 - `timeline`: List of D-day rows.
 - `target_surfaces`: Primary files, directories, or
   subsystems named by the plan.
 - `off_limits`: Files, directories, systems, or behaviors
-  the plan says not to touch. Entries keep the backticks of
-  the plan text (`` `Makefile` ``), while `target_surfaces`
-  strips them.
+  the plan says not to touch. Backticks are removed from
+  each entry, so `` `Makefile` `` becomes `Makefile`.
 - `candidate_lanes`: Proposed lane objects. Each lane has a
   `label`, `title`, `days`, `target_surfaces`,
   `validation_commands`, and `dependencies`.
@@ -52,6 +52,10 @@ tests can inspect it without reparsing prose.
   program copies a line when, in any letter case, it
   contains `human gate` or `operator-gated`, or it contains
   `approval` or `approve` and not `without approval`. A
+  line whose text, after any `-` or `*` bullet marker or
+  `#`, starts in any letter case with `Status` and a colon,
+  such as `Status: approved.`, is metadata and is never
+  copied. A
   heading whose whole text is a generic gate title, such as
   `Human Gates` or `Approvals`, is not copied. The program
   misses a gate worded any other way, and it can copy a
@@ -83,7 +87,10 @@ Use `needs_human` when any of these are true:
 - The plan is not m2-shaped and does not state success
   criteria or acceptance criteria. The program reads that
   as: no bullet under a heading that contains `success`,
-  `acceptance`, `criteria`, `test plan`, or `validation`.
+  `acceptance`, `criteria`, or `test plan`. A heading named
+  only `Validation` does not count, so a plan whose only
+  bullets sit under `Validation` is sent to `needs_human`
+  for missing success criteria.
 - The plan is not m2-shaped and does not name validation
   commands the program recognizes.
 - Two or more candidate lanes overlap on a primary target

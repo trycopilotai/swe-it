@@ -28,6 +28,8 @@ over:
   manager-of-managers, or needs a durable conductor loop.
 - Stop at `needs_human` when the plan lacks success
   criteria, validation, ownership, or a safe dispatch shape.
+  A `Validation` section supplies commands only, not success
+  criteria.
 
 The contract builder picks the `mode` from text patterns in
 the plan, which `references/plan-contract.md` lists. It does
@@ -116,8 +118,8 @@ python3 scripts/swe_it.py verify --contract <contract-json>
 - Forward human gates into the downstream dispatch instead
   of treating them as `swe-it` blockers. The program copies
   only the gate lines its patterns match
-  (`references/plan-contract.md`); add any gate it missed
-  to the dispatch yourself.
+  (`references/plan-contract.md`), never a `Status:` line;
+  add any gate it missed to the dispatch yourself.
 - Carry an ambiguity register into downstream execution.
   Resolve implementation ambiguity through repo discovery,
   tests, and reversible choices. Stop only for high-impact
