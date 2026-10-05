@@ -52,11 +52,12 @@ tests can inspect it without reparsing prose.
   program copies a line when, in any letter case, it
   contains `human gate` or `operator-gated`, or it contains
   `approval` or `approve` and not `without approval`. A
-  line whose text, after any `-` or `*` bullet marker or
-  `#`, starts in any letter case with `Status` and a colon,
-  such as `Status: approved.`, is metadata and is never
-  copied. A
-  heading whose whole text is a generic gate title, such as
+  line whose text, after any `-`, `*` or `+` bullet marker,
+  numbered-list marker such as `1.` or `2)`, or `#`, starts
+  in any letter case with `Status` and a colon, such as
+  `Status: approved.` or `1. Status: approved.`, is metadata
+  and is never copied; bold forms such as `**Status:**` are
+  skipped too. A heading whose whole text is a generic gate title, such as
   `Human Gates` or `Approvals`, is not copied. The program
   misses a gate worded any other way, and it can copy a
   line that uses one of those words without being a gate.

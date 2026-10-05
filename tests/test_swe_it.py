@@ -806,6 +806,20 @@ Status: approved.
             ),
             ["Human gate required before execution."],
         )
+        self.assertEqual(
+            MODULE._extract_human_gates(
+                "1. Status: approved.\n"
+                "2) **Status:** awaiting approval\n"
+                "+ Status: approved\n"
+                "- 3. Status: approved\n"
+                "1. Approval from operator is needed.\n"
+                "+ Human gate before deploy.\n"
+            ),
+            [
+                "1. Approval from operator is needed.",
+                "+ Human gate before deploy.",
+            ],
+        )
 
     def test_validation_heading_is_not_success_criteria(self) -> None:
         plan = self._plan_file(
@@ -1067,6 +1081,44 @@ Status: approved.
             )
             self.assertEqual(code, 0)
             self.assertIn("swe-day(CLI)", prompts_out.read_text(encoding="utf-8"))
+
+            nested = Path(directory) / "missing" / "dir"
+            plan_path = Path(directory) / "plan.md"
+            plan_path.write_text(
+                "# Add a flag\n\n## Success Criteria\n\n- Done.\n\n"
+                "## Validation\n\n- make check\n",
+                encoding="utf-8",
+            )
+            code = MODULE.main(
+                [
+                    "contract",
+                    "--plan",
+                    str(plan_path),
+                    "--repo",
+                    directory,
+                    "--out",
+                    str(nested / "contract.json"),
+                ]
+            )
+            self.assertEqual(code, 0)
+            self.assertIn(
+                '"mode": "solo"',
+                (nested / "contract.json").read_text(encoding="utf-8"),
+            )
+            code = MODULE.main(
+                [
+                    "prompts",
+                    "--contract",
+                    str(contract_path),
+                    "--out",
+                    str(nested / "prompts" / "prompts.md"),
+                ]
+            )
+            self.assertEqual(code, 0)
+            self.assertIn(
+                "swe-day(CLI)",
+                (nested / "prompts" / "prompts.md").read_text(encoding="utf-8"),
+            )
 
             stdout = io.StringIO()
             with contextlib.redirect_stdout(stdout):

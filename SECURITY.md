@@ -35,8 +35,9 @@ private channel.
   `next` reads `swe-it.json` in the directory it is given.
   Each of `contract`, `timeline`, `lanes` and `prompts`
   writes one file, at the path given, when `--out` is given
-  and otherwise prints. `verify --out` writes its report the
-  same way. A plan or contract
+  and otherwise prints; it first creates any missing parent
+  directories of that path. `verify --out` writes its report
+  the same way. A plan or contract
   that makes one of these five subcommands write any other
   file, or run any command other than that one `git config`
   read, is a valid report.

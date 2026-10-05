@@ -42,6 +42,7 @@ REMOTE_REF_RE = re.compile(
     r"(?<![\w@.-])www\.[A-Za-z0-9.-]+\.[A-Za-z]{2,}/[^\s`<>)]+"
 )
 STATUS_LINE_RE = re.compile(r"status\s*\**\s*:")
+LIST_MARKER_RE = re.compile(r"^(?:[-*+]+\s*|\d+[.)]\s+)+")
 D_LABEL_RE = re.compile(r"\bD(\d{1,3})\b", re.IGNORECASE)
 DATE_RE = re.compile(
     r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?"
@@ -341,7 +342,7 @@ def _extract_human_gates(text: str) -> list[str]:
         if not gate_text:
             continue
         lower = gate_text.lower()
-        if STATUS_LINE_RE.match(lower):
+        if STATUS_LINE_RE.match(LIST_MARKER_RE.sub("", lower)):
             continue
         if "human gate" in lower or "operator-gated" in lower:
             gates.append(_collapse(gate_text))
@@ -840,10 +841,16 @@ def _load_json_arg(value: str) -> dict[str, Any]:
     return data
 
 
+def _write_text(out_path: str, text: str) -> None:
+    path = Path(out_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
 def _write_or_print(data: Any, out_path: str | None) -> None:
     text = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
     if out_path:
-        Path(out_path).write_text(text, encoding="utf-8")
+        _write_text(out_path, text)
     else:
         sys.stdout.write(text)
 
@@ -1305,7 +1312,7 @@ def main(argv: list[str] | None = None) -> int:
         contract = _load_json_arg(args.contract)
         text = render_prompts(contract)
         if args.out:
-            Path(args.out).write_text(text, encoding="utf-8")
+            _write_text(args.out, text)
         else:
             sys.stdout.write(text)
         return 0

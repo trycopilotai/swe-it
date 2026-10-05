@@ -55,9 +55,12 @@ python3 scripts/swe_it.py contract \
    later steps read it. Default to
    `${TMPDIR:-/tmp}/swe-it/<plan-stem>/contract.json`, where
    `<plan-stem>` is the plan file's name without its
-   extension; a path the operator chooses is fine too. `scripts/swe_it.py`, here and below,
-   is relative to this skill's directory, not to the target
-   repo.
+   extension, or, for inline text or a chat plan, a short
+   lowercase hyphenated slug you pick from the plan's title.
+   A path the operator chooses is fine too. Every `--out`
+   option creates missing parent directories.
+   `scripts/swe_it.py`, here and below, is relative to this
+   skill's directory, not to the target repo.
 
 3. If the contract mode is `needs_human`, stop and present
    only the blocking questions.
@@ -118,7 +121,8 @@ python3 scripts/swe_it.py verify --contract <contract-json>
 - Forward human gates into the downstream dispatch instead
   of treating them as `swe-it` blockers. The program copies
   only the gate lines its patterns match
-  (`references/plan-contract.md`), never a `Status:` line;
+  (`references/plan-contract.md`), never a `Status:` line,
+  even after a list marker such as `1.`;
   add any gate it missed to the dispatch yourself.
 - Carry an ambiguity register into downstream execution.
   Resolve implementation ambiguity through repo discovery,

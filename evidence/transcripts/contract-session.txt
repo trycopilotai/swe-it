@@ -37,8 +37,8 @@ $ swe verify --contract state/swe-it.json
 {
   "passed": false,
   "repo_root": "/work/repo",
-  "head": "96728d6dd3088266ba984a5a4b4a51e9237d7c60",
-  "worktree_path": "/work/tmp/swe-it-verify-3zio7_xf/head",
+  "head": "fb92d6befbee9d9e7a6127891d101207fbc787eb",
+  "worktree_path": "/work/tmp/swe-it-verify-ztw73m4a/head",
   "worktree_removed": true,
   "commands": [
     {
@@ -47,12 +47,12 @@ $ swe verify --contract state/swe-it.json
       "exit_code": 2,
       "passed": false,
       "stdout_tail": "",
-      "stderr_tail": "python3: can't open file '/work/tmp/swe-it-verify-3zio7_xf/head/greeting.py': [Errno 2] No such file or directory\n",
-      "summary": "python3: can't open file '/work/tmp/swe-it-verify-3zio7_xf/head/greeting.py': [Errno 2] No such file or directory"
+      "stderr_tail": "python3: can't open file '/work/tmp/swe-it-verify-ztw73m4a/head/greeting.py': [Errno 2] No such file or directory\n",
+      "summary": "python3: can't open file '/work/tmp/swe-it-verify-ztw73m4a/head/greeting.py': [Errno 2] No such file or directory"
     }
   ],
   "failure_summaries": [
-    "python3 greeting.py: python3: can't open file '/work/tmp/swe-it-verify-3zio7_xf/head/greeting.py': [Errno 2] No such file or directory"
+    "python3 greeting.py: python3: can't open file '/work/tmp/swe-it-verify-ztw73m4a/head/greeting.py': [Errno 2] No such file or directory"
   ],
   "submodules_initialized": false,
   "required_submodules": [],

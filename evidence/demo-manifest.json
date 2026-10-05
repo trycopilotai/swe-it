@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "date": "2026-10-04",
+  "date": "2026-10-05",
   "skill": {
     "path": "skills/swe-it/SKILL.md",
-    "sha256": "d956bf6026d80803f6767c2ea1b703bf94351adf27368f37331219a95d1a7dd0"
+    "sha256": "81521f24cff365905c79cea7b8dc97b469acc70d20b46e68143a3b71b3b93363"
   },
   "programs": [
     {
       "path": "skills/swe-it/scripts/swe_it.py",
-      "sha256": "05b98f2825cda80bdfc2e123fd35bb3d87ac8ff83a4a811d398736c3aa6d7b05"
+      "sha256": "5d395562e5c8ee5c5f22d543ad23b3b9ad69263e9eb5f67f14f6a268f5ae3235"
     }
   ],
   "agent": {
@@ -32,7 +32,7 @@
   },
   "output": {
     "path": "evidence/transcripts/contract-session.txt",
-    "sha256": "e6fffdcadca77b676cc8b314c536cbb34451413444cfb33be7fdc7bc4ecfab42",
+    "sha256": "8a3024c2faca6dd01ef3a535100550d1cb957df98c56ece9ef87223bf82c40bd",
     "edited": true,
     "transforms": [
       {
