@@ -7,6 +7,7 @@ import contextlib
 import importlib.util
 import io
 import json
+import os
 import runpy
 import subprocess
 import sys
@@ -461,8 +462,11 @@ class SweItTest(unittest.TestCase):
 """,
                 encoding="utf-8",
             )
-            older.touch()
-            newer.touch()
+            # Set the two modification times apart explicitly. Two files
+            # written back to back can share one timestamp, and the
+            # program then breaks the tie by path, which picks "older".
+            os.utime(older, (1_700_000_000, 1_700_000_000))
+            os.utime(newer, (1_700_000_100, 1_700_000_100))
             code = MODULE.main(
                 [
                     "contract",

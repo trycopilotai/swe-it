@@ -1,6 +1,6 @@
 {
   "name": "swe-it",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn an approved implementation plan into a JSON execution contract and a dispatch prompt for a swe-day, multi-swe-day or m2 run, with a needs_human stop and a clean-HEAD verifier.",
   "author": {
     "name": "trycopilot.ai"

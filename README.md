@@ -120,7 +120,7 @@ fails.
 
 ```sh
 set -eu
-release=v0.1.0
+release=v0.1.1
 install_target="$HOME/.claude/skills/swe-it"
 install_parent="$(dirname "$install_target")"
 mkdir -p "$install_parent"
@@ -157,7 +157,7 @@ the block above is `install_target`.
 
 ```sh
 set -eu
-release=v0.1.0
+release=v0.1.1
 install_target="$HOME/.agents/skills/swe-it"
 install_parent="$(dirname "$install_target")"
 mkdir -p "$install_parent"
