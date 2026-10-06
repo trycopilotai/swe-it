@@ -439,6 +439,10 @@ class EvidenceTest(unittest.TestCase):
         self.assertIn("[... ", text)
         self.assertTrue(text.endswith("## final message\n\ndone /work\n"))
         self.assertIn("model: m", text)
+        for kept in ("/h/u/fix+x", "/h/u/fix:x", "/h/u/fixture"):
+            self.assertEqual(renderer.scrub(kept, *fields), kept.replace("/h/u", "~"))
+        for ended in ("/h/u/fix", "/h/u/fix/a", "/h/u/fix x", '"/h/u/fix"', "(/h/u/fix)"):
+            self.assertIn("/work", renderer.scrub(ended, *fields))
 
 
 class DemoTest(unittest.TestCase):

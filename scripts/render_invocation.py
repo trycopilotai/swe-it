@@ -26,10 +26,13 @@ the prompt before rendering, in this order:
 4. ``replace-home``: the home directory becomes ``~``.
 5. ``replace-hostname``: the hostname becomes ``host``.
 
-A path is replaced only as a whole prefix: the next character must not
-continue the same path segment. A tool call's arguments are then cut
-to ``LIMIT`` characters, the same rule for every call. The output
-depends only on the inputs.
+A path is replaced only where the character after it is ``/``,
+whitespace, a quote, a backslash, ``)`` or the end of the text. Any
+other next character, such as ``+``, ``:`` or a letter, leaves it as it
+is, so ``/a/fix`` is not replaced inside ``/a/fixture`` or
+``/a/fix+x``, but a ``/a/fix)x`` would still be replaced. A tool
+call's arguments are then cut to ``LIMIT`` characters, the same rule
+for every call. The output depends only on the inputs.
 """
 
 from __future__ import annotations
@@ -40,7 +43,7 @@ import re
 from pathlib import Path
 
 LIMIT = 400
-SEGMENT = r"(?![A-Za-z0-9._-])"
+SEGMENT = r"(?=[/\s\"'\\)]|\Z)"
 SCRATCH = re.compile(r"(?:/private)?/tmp/claude-[0-9]+/[A-Za-z0-9._-]+" + SEGMENT)
 
 
