@@ -30,15 +30,16 @@ command shows only its exit status.
 **Not measured, stated up front.**
 
 - No agent executed a plan to produce the evidence here. The
-  transcript shows only the program.
-- Whether an agent that follows `SKILL.md` stops at
-  `needs_human`, dispatches the prompt, or runs the verifier
-  has not been measured.
+  demo transcript shows only the program, and the two agent
+  runs below stopped at `needs_human`.
+- Whether an agent that follows `SKILL.md` dispatches the
+  prompt or runs the verifier has not been measured.
 - The program picks a route from text patterns. How often
   that route is the one a person would pick has not been
   measured.
-- Neither Claude Code nor Codex was started to confirm that
-  the invocation names below resolve.
+- Neither client was started from the install blocks below.
+  The agent runs loaded the skill from a plugin directory and
+  from a repository's `.agents/skills/`.
 
 ## What the claim means
 
@@ -120,7 +121,7 @@ fails.
 
 ```sh
 set -eu
-release=v0.1.5
+release=v0.1.6
 install_target="$HOME/.claude/skills/swe-it"
 install_parent="$(dirname "$install_target")"
 mkdir -p "$install_parent"
@@ -157,7 +158,7 @@ the block above is `install_target`.
 
 ```sh
 set -eu
-release=v0.1.5
+release=v0.1.6
 install_target="$HOME/.agents/skills/swe-it"
 install_parent="$(dirname "$install_target")"
 mkdir -p "$install_parent"
@@ -225,6 +226,34 @@ last command runs `verify` against a repository in which the
 file that command needs was never committed, so the command
 fails in the clean worktree and `verify` exits with
 status 1.
+
+### Agent invocations
+
+Each client was given the same request on one synthetic
+fixture: a small Python CLI and an approved plan with no
+validation step. One run per client; not a benchmark.
+
+- [`evidence/transcripts/2026-10-05-claude-code-invocation.txt`](evidence/transcripts/2026-10-05-claude-code-invocation.txt):
+  Claude Code 2.1.220, skill loaded from `--plugin-dir`. It
+  called the skill, ran `contract`, got `needs_human` with
+  `missing validation commands`, and stopped to ask for a
+  validation command. It changed no files.
+- [`evidence/transcripts/2026-10-05-codex-invocation.txt`](evidence/transcripts/2026-10-05-codex-invocation.txt):
+  Codex 0.146.0, skill copied into the fixture's
+  `.agents/skills/swe-it/`. It read `SKILL.md`, ran
+  `contract`, got the same `needs_human`, and asked the same
+  question. It changed no files.
+
+Neither run reached `prompts`, a dispatch or `verify`.
+`scripts/render_invocation.py` rendered both from the raw
+event streams, which are not committed. It keeps the prompt,
+each tool call cut at 400 characters, each call's status and
+the final message, and leaves tool output out. Its only
+edits are `replace-plugin-root`, `replace-scratch-root`,
+`replace-capture-root`, `replace-home` and
+`replace-hostname`, declared under `invocations` in
+`evidence/demo-manifest.json` with each transcript's and raw
+stream's SHA-256.
 
 `make check` runs the program's own tests and a packaging
 contract that ties this file, both plugin manifests, the

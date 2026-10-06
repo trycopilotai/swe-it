@@ -354,6 +354,93 @@ class EvidenceTest(unittest.TestCase):
             self.assertNotIn(fragment, text)
 
 
+    def test_invocation_transcripts_match_the_manifest(self) -> None:
+        record = json.loads(read(MANIFEST))
+        runs = record["invocations"]
+        self.assertEqual(
+            [run["product"] for run in runs], ["Claude Code", "Codex"]
+        )
+        names = [
+            "replace-plugin-root",
+            "replace-scratch-root",
+            "replace-capture-root",
+            "replace-home",
+            "replace-hostname",
+        ]
+        listed = sorted(
+            path.name
+            for path in (ROOT / "evidence" / "transcripts").glob("*-invocation.txt")
+        )
+        self.assertEqual(
+            listed,
+            sorted(Path(run["transcript"]["path"]).name for run in runs),
+        )
+        for run in runs:
+            transcript = ROOT / run["transcript"]["path"]
+            self.assertEqual(run["transcript"]["sha256"], sha256(transcript))
+            self.assertRegex(run["raw_output_sha256"], r"^[0-9a-f]{64}$")
+            self.assertIs(run["invoked_the_skill"], True)
+            self.assertEqual([entry["name"] for entry in run["transforms"]], names)
+            text = read(transcript)
+            self.assertIn(run["invocation"], text)
+            self.assertIn("swe_it.py contract", text)
+            self.assertIn("needs_human", run["outcome"])
+            for fragment in ("/Users/", "/private/", "-Users-", "/home/"):
+                self.assertNotIn(fragment, text)
+            self.assertNotRegex(text, r"claude-[0-9]+/")
+        for name in names:
+            self.assertIn("`%s`" % name, read(README))
+        self.assertIn('"skill": "swe-it:swe-it"', read(ROOT / runs[0]["transcript"]["path"]))
+        self.assertIn(".agents/skills/swe-it/SKILL.md", read(ROOT / runs[1]["transcript"]["path"]))
+
+    def test_renderer_replaces_whole_prefixes_in_order(self) -> None:
+        renderer = load(ROOT / "scripts" / "render_invocation.py", "render_invocation")
+        raw = "\n".join(
+            json.dumps(event)
+            for event in (
+                {"type": "system", "subtype": "init", "model": "m", "claude_code_version": "1"},
+                {
+                    "type": "assistant",
+                    "message": {
+                        "content": [
+                            {
+                                "type": "tool_use",
+                                "id": "a",
+                                "name": "Bash",
+                                "input": {
+                                    "command": "cd /h/u/clone/skills && ls /h/u/fix"
+                                    " /h/u/fixture2 /private/tmp/claude-7/-h-u-fix/s/x"
+                                    " /h/u/other on box.local " + "z" * 500
+                                },
+                            }
+                        ]
+                    },
+                },
+                {
+                    "type": "user",
+                    "message": {
+                        "content": [
+                            {"type": "tool_result", "tool_use_id": "a", "is_error": True}
+                        ]
+                    },
+                },
+                {"type": "result", "subtype": "success", "result": "done /h/u/fix"},
+            )
+        )
+        fields = (["/h/u/clone"], "/h/u/fix", "/h/u", "box.local")
+        text = renderer.render(
+            "claude-code", renderer.scrub(raw, *fields), "go"
+        )
+        self.assertIn(
+            "cd /plugin/skills && ls /work ~/fixture2 /scratch/s/x ~/other on host",
+            text,
+        )
+        self.assertIn("[1] Bash (error)", text)
+        self.assertIn("[... ", text)
+        self.assertTrue(text.endswith("## final message\n\ndone /work\n"))
+        self.assertIn("model: m", text)
+
+
 class DemoTest(unittest.TestCase):
     def test_images_agree_with_the_transcript(self) -> None:
         verifier = load(ROOT / "scripts" / "verify_demo.py", "verify_demo")

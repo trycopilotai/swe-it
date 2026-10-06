@@ -41,5 +41,86 @@
       }
     ],
     "note": "scripts/record_session.py ran each command in its own bash -c and, after it finished, wrote the command line, the command's output, and an exit status line built from its exit status. The echo lines were written by the recorder, not run."
-  }
+  },
+  "invocations": [
+    {
+      "product": "Claude Code",
+      "version": "2.1.220",
+      "model": "claude-sonnet-5",
+      "model_source": "the init event of the stream-json output",
+      "invocation": "Use the /swe-it skill to execute the approved plan in plans/add-json-flag.md. Stay inside this directory.",
+      "skill_source": "--plugin-dir pointing at a clone of this repository at v0.1.5",
+      "fixture": "A synthetic git repository made for this run: a Python greet CLI (greet/cli.py) with three unittest cases, a Makefile whose check target runs them, and one saved plan, plans/add-json-flag.md, marked 'Status: approved.' with Goal, Target surfaces, Off limits, Steps and Success criteria sections and no Validation section or command line. Commits by Test <test@example.com>, no remotes.",
+      "date": "2026-10-05",
+      "transcript": {
+        "path": "evidence/transcripts/2026-10-05-claude-code-invocation.txt",
+        "sha256": "008285339a8a3bd73ffa9f3093ad8004db2e0648bd9e3be7867ae83ffcbbfe9a"
+      },
+      "raw_output_sha256": "b29994637cd9cec0a07f642eb6136907b9cd5b4f1a2657c883b18b351abae3e1",
+      "transforms": [
+        {
+          "name": "replace-plugin-root",
+          "what": "The absolute path of the directory the client loaded the skill from became /plugin."
+        },
+        {
+          "name": "replace-scratch-root",
+          "what": "The client's own scratch directory, a /private/tmp/claude-<uid>/<slug> prefix with its slug, became /scratch."
+        },
+        {
+          "name": "replace-capture-root",
+          "what": "The fixture's absolute path became /work."
+        },
+        {
+          "name": "replace-home",
+          "what": "The home directory became ~."
+        },
+        {
+          "name": "replace-hostname",
+          "what": "The hostname became host."
+        }
+      ],
+      "invoked_the_skill": true,
+      "outcome": "Loaded the skill with a Skill call (swe-it:swe-it), ran the contract builder, got needs_human with 'missing validation commands', and stopped to ask for a validation command; it changed no files and ran neither prompts nor verify."
+    },
+    {
+      "product": "Codex",
+      "version": "0.146.0",
+      "model": "gpt-5.6-sol",
+      "model_source": "the Codex session log for the run; codex exec --json does not print the model",
+      "invocation": "Use the $swe-it skill to execute the approved plan in plans/add-json-flag.md. Stay inside this directory.",
+      "skill_source": "a copy of skills/swe-it/ at v0.1.5 committed in the fixture at .agents/skills/swe-it/",
+      "fixture": "A synthetic git repository made for this run: a Python greet CLI (greet/cli.py) with three unittest cases, a Makefile whose check target runs them, and one saved plan, plans/add-json-flag.md, marked 'Status: approved.' with Goal, Target surfaces, Off limits, Steps and Success criteria sections and no Validation section or command line. Commits by Test <test@example.com>, no remotes.",
+      "date": "2026-10-05",
+      "transcript": {
+        "path": "evidence/transcripts/2026-10-05-codex-invocation.txt",
+        "sha256": "065119d573fa418728171b87af2909a2460edd77f21b32de6749a5a5849083c5"
+      },
+      "raw_output_sha256": "b3517def4e2d0b0cbc66d5ee43143f7d6c7880dc2c0fa2954219d40a0fc6b58d",
+      "transforms": [
+        {
+          "name": "replace-plugin-root",
+          "what": "The absolute path of the directory the client loaded the skill from became /plugin."
+        },
+        {
+          "name": "replace-scratch-root",
+          "what": "The client's own scratch directory, a /private/tmp/claude-<uid>/<slug> prefix with its slug, became /scratch."
+        },
+        {
+          "name": "replace-capture-root",
+          "what": "The fixture's absolute path became /work."
+        },
+        {
+          "name": "replace-home",
+          "what": "The home directory became ~."
+        },
+        {
+          "name": "replace-hostname",
+          "what": "The hostname became host."
+        }
+      ],
+      "invoked_the_skill": true,
+      "outcome": "Read .agents/skills/swe-it/SKILL.md, ran the contract builder, got needs_human with 'missing validation commands', and stopped to ask for a validation command; it changed no files and ran neither prompts nor verify."
+    }
+  ],
+  "invocations_note": "Each transcript was rendered by scripts/render_invocation.py from the client's raw event stream, which is not committed. It holds the prompt, every tool call with its arguments cut at 400 characters, each call's status where the stream records one, and the final message; tool output is left out. One synthetic fixture and one run per client: not a benchmark."
 }
