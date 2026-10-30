@@ -18,11 +18,7 @@ from unittest import mock
 
 
 SCRIPT_PATH = (
-    Path(__file__).resolve().parents[1]
-    / "skills"
-    / "swe-it"
-    / "scripts"
-    / "swe_it.py"
+    Path(__file__).resolve().parents[1] / "skills" / "swe-it" / "scripts" / "swe_it.py"
 )
 SPEC = importlib.util.spec_from_file_location("swe_it", SCRIPT_PATH)
 if SPEC is None:
@@ -178,7 +174,9 @@ class SweItTest(unittest.TestCase):
         contract = MODULE.build_contract(plan, "/repo", "D02")
         self.assertEqual([row["label"] for row in contract["timeline"]], ["D02"])
         self.assertEqual(contract["mode"], "solo")
-        self.assertEqual([lane["days"] for lane in contract["candidate_lanes"]], [["D02"]])
+        self.assertEqual(
+            [lane["days"] for lane in contract["candidate_lanes"]], [["D02"]]
+        )
         self.assertEqual(contract["target_surfaces"], ["src/a.py", "src/b.py"])
         prompt = MODULE.render_prompts(contract)
         self.assertIn("- src/a.py", prompt)
@@ -792,9 +790,7 @@ Status: approved.
 """
         )
         contract = MODULE.build_contract(plan, "/repo", None)
-        self.assertEqual(
-            contract["human_gates"], ["Approval from operator is needed."]
-        )
+        self.assertEqual(contract["human_gates"], ["Approval from operator is needed."])
         self.assertEqual(contract["mode"], "solo")
         self.assertEqual(
             MODULE._extract_human_gates(

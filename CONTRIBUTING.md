@@ -50,8 +50,9 @@ date and interpreter. It needs `bash`, `git` and `python3`.
 The transcript usually carries a new commit id, and carries
 a new temporary directory name, each time, so it changes
 even when the program did not. `make demo` rebuilds the two
-images from the transcript. `make assets` rebuilds the social preview
-and needs Chrome or Chromium; `make asset-check` does not.
+images from the transcript. `make assets` rebuilds the
+social preview and needs Chrome or Chromium;
+`make asset-check` does not.
 
 ## What is most useful
 

@@ -341,7 +341,9 @@ class EvidenceTest(unittest.TestCase):
         ]
         self.assertEqual(
             appended,
-            ["printf '\\n## Validation\\n\\n- python3 greeting.py\\n' >> plans/greeting.md"],
+            [
+                "printf '\\n## Validation\\n\\n- python3 greeting.py\\n' >> plans/greeting.md"
+            ],
         )
         ready = contract(plan_text + "\n## Validation\n\n- python3 greeting.py\n")
         self.assertEqual(ready["mode"], "solo")
@@ -353,13 +355,10 @@ class EvidenceTest(unittest.TestCase):
         for fragment in ("/var/folders", "/private/", "/Users/", "/home/"):
             self.assertNotIn(fragment, text)
 
-
     def test_invocation_transcripts_match_the_manifest(self) -> None:
         record = json.loads(read(MANIFEST))
         runs = record["invocations"]
-        self.assertEqual(
-            [run["product"] for run in runs], ["Claude Code", "Codex"]
-        )
+        self.assertEqual([run["product"] for run in runs], ["Claude Code", "Codex"])
         names = [
             "replace-plugin-root",
             "replace-scratch-root",
@@ -390,15 +389,24 @@ class EvidenceTest(unittest.TestCase):
             self.assertNotRegex(text, r"claude-[0-9]+/")
         for name in names:
             self.assertIn("`%s`" % name, read(README))
-        self.assertIn('"skill": "swe-it:swe-it"', read(ROOT / runs[0]["transcript"]["path"]))
-        self.assertIn(".agents/skills/swe-it/SKILL.md", read(ROOT / runs[1]["transcript"]["path"]))
+        self.assertIn(
+            '"skill": "swe-it:swe-it"', read(ROOT / runs[0]["transcript"]["path"])
+        )
+        self.assertIn(
+            ".agents/skills/swe-it/SKILL.md", read(ROOT / runs[1]["transcript"]["path"])
+        )
 
     def test_renderer_replaces_whole_prefixes_in_order(self) -> None:
         renderer = load(ROOT / "scripts" / "render_invocation.py", "render_invocation")
         raw = "\n".join(
             json.dumps(event)
             for event in (
-                {"type": "system", "subtype": "init", "model": "m", "claude_code_version": "1"},
+                {
+                    "type": "system",
+                    "subtype": "init",
+                    "model": "m",
+                    "claude_code_version": "1",
+                },
                 {
                     "type": "assistant",
                     "message": {
@@ -420,7 +428,11 @@ class EvidenceTest(unittest.TestCase):
                     "type": "user",
                     "message": {
                         "content": [
-                            {"type": "tool_result", "tool_use_id": "a", "is_error": True}
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": "a",
+                                "is_error": True,
+                            }
                         ]
                     },
                 },
@@ -428,9 +440,7 @@ class EvidenceTest(unittest.TestCase):
             )
         )
         fields = (["/h/u/clone"], "/h/u/fix", "/h/u", "box.local")
-        text = renderer.render(
-            "claude-code", renderer.scrub(raw, *fields), "go"
-        )
+        text = renderer.render("claude-code", renderer.scrub(raw, *fields), "go")
         self.assertIn(
             "cd /plugin/skills && ls /work ~/fixture2 /scratch/s/x ~/other on host",
             text,
@@ -441,7 +451,13 @@ class EvidenceTest(unittest.TestCase):
         self.assertIn("model: m", text)
         for kept in ("/h/u/fix+x", "/h/u/fix:x", "/h/u/fixture"):
             self.assertEqual(renderer.scrub(kept, *fields), kept.replace("/h/u", "~"))
-        for ended in ("/h/u/fix", "/h/u/fix/a", "/h/u/fix x", '"/h/u/fix"', "(/h/u/fix)"):
+        for ended in (
+            "/h/u/fix",
+            "/h/u/fix/a",
+            "/h/u/fix x",
+            '"/h/u/fix"',
+            "(/h/u/fix)",
+        ):
             self.assertIn("/work", renderer.scrub(ended, *fields))
 
 
