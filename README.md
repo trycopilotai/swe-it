@@ -3,13 +3,18 @@
 A skill that has a coding agent turn an approved plan into a
 JSON execution contract, hand it to one of three execution
 skills, and check the result from a clean checkout of the
-committed `HEAD`. It ships one program, `swe_it.py`, that
-builds the contract, renders the dispatch prompt, and runs
-the check.
+committed `HEAD`.
+
+---
 
 [![auto-lint-pr](https://github.com/trycopilotai/swe-it/actions/workflows/auto-lint-pr.yml/badge.svg)](https://github.com/trycopilotai/swe-it/actions/workflows/auto-lint-pr.yml)
 [![check](https://github.com/trycopilotai/swe-it/actions/workflows/check.yml/badge.svg)](https://github.com/trycopilotai/swe-it/actions/workflows/check.yml)
 [![lint](https://github.com/trycopilotai/swe-it/actions/workflows/lint.yml/badge.svg)](https://github.com/trycopilotai/swe-it/actions/workflows/lint.yml)
+
+---
+
+It ships one program, `swe_it.py`, that builds the contract,
+renders the dispatch prompt, and runs the check.
 
 Non-m2 plans with no recognized validation get needs_human.
 
