@@ -37,10 +37,9 @@ private channel.
   writes one file, at the path given, when `--out` is given
   and otherwise prints; it first creates any missing parent
   directories of that path. `verify --out` writes its report
-  the same way. A plan or contract
-  that makes one of these five subcommands write any other
-  file, or run any command other than that one `git config`
-  read, is a valid report.
+  the same way. A plan or contract that makes one of these
+  five subcommands write any other file, or run any command
+  other than that one `git config` read, is a valid report.
 - **The install blocks.** The two README blocks run
   `mkdir -p`, `mktemp -d`, `git clone`, `cp`, `mv` and
   `rm -rf`, all inside one skills directory under `$HOME`. A
@@ -50,19 +49,19 @@ private channel.
   Chromium binary from a fixed candidate list, runs it
   headless with a temporary profile directory, and writes
   the preview PNG and its stamp. `scripts/generate_demo.py`
-  writes two SVG files; `scripts/verify_demo.py` only
-  reads. `scripts/record_session.py` copies `skills/` into
-  a temporary directory, creates a git repository with one
+  writes two SVG files; `scripts/verify_demo.py` only reads.
+  `scripts/record_session.py` copies `skills/` into a
+  temporary directory, creates a git repository with one
   commit there, runs the program and a few shell commands
   through `bash`, and rewrites the transcript and the
   manifest. With `RECORD_RAW_DIR` set it also writes two
   files into that directory, which is outside the
   repository. `tests/test_integrations.py` runs `git`
   against the repository root and runs the program on a plan
-  in a temporary directory. `tests/test_swe_it.py` creates git
-  repositories in temporary directories, commits to them,
-  adds one as a submodule of another, and runs `verify` on
-  them.
+  in a temporary directory. `tests/test_swe_it.py` creates
+  git repositories in temporary directories, commits to
+  them, adds one as a submodule of another, and runs
+  `verify` on them.
 
 ## `verify` runs the plan's commands
 
@@ -88,9 +87,9 @@ findings:
   including the original repository. Treat a plan and a
   contract as code.
 - Before the commands, it reads the commit id of `HEAD` and
-  runs `git worktree add --detach` at that id
-  in the contract's `repo_root`, which writes worktree
-  metadata into that repository, and afterwards
+  runs `git worktree add --detach` at that id in the
+  contract's `repo_root`, which writes worktree metadata
+  into that repository, and afterwards
   `git worktree remove --force`. If the process is killed in
   between, the worktree and its temporary directory stay
   behind. When `repo_root` is a directory inside a
@@ -150,11 +149,11 @@ These are also known limits, not findings:
   chooses it. A file whose path, as built from the `--repo`
   value, has a component named `.git`, `node_modules` or
   `__pycache__` is skipped.
-- Malformed input can end in a Python traceback and not in
-  a message. Some examples, not a complete list: a plan
-  that is not UTF-8, a contract that is not JSON, a contract
-  that lacks a field the subcommand reads, or a `repo_root`
-  that does not exist.
+- Malformed input can end in a Python traceback and not in a
+  message. Some examples, not a complete list: a plan that
+  is not UTF-8, a contract that is not JSON, a contract that
+  lacks a field the subcommand reads, or a `repo_root` that
+  does not exist.
 - The program needs `git` for `contract` in a repository
   with a `.gitmodules` file and for `verify`, and
   `/bin/bash` for `verify`.

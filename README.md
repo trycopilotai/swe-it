@@ -38,8 +38,8 @@ command shows only its exit status.
   that route is the one a person would pick has not been
   measured.
 - Neither client was started from the install blocks below.
-  The agent runs loaded the skill from a plugin directory and
-  from a repository's `.agents/skills/`.
+  The agent runs loaded the skill from a plugin directory
+  and from a repository's `.agents/skills/`.
 
 ## What the claim means
 
@@ -66,22 +66,24 @@ block counts as validation, and `verify` will run it.
   has six subcommands. `contract` reads a plan and writes
   the contract; its `--day` option filters the timeline and
   lanes to one row, while the dispatch prompt still carries
-  the whole plan's target surfaces. `timeline` and `lanes` print those two parts
-  of a contract. `prompts` renders the dispatch prompt for
-  the contract's mode. `verify` adds a detached worktree of
-  the committed `HEAD` in a temporary directory, runs the
-  commands in the contract's `final_verification` object
-  there, and removes the worktree. `next` prints a one-line banner from a contract
+  the whole plan's target surfaces. `timeline` and `lanes`
+  print those two parts of a contract. `prompts` renders the
+  dispatch prompt for the contract's mode. `verify` adds a
+  detached worktree of the committed `HEAD` in a temporary
+  directory, runs the commands in the contract's
+  `final_verification` object there, and removes the
+  worktree. `next` prints a one-line banner from a contract
   saved as `swe-it.json` in a state directory.
 
 `verify` runs the commands in the contract's
 `final_verification` object through `/bin/bash`, and
-`contract` copies those commands from the plan. When a
-saved contract has a `final_verification` object with its
-own `validation_commands` list, a command added only to the
-top-level `validation_commands` is not run. Read the contract before you run `verify` on
-a plan you did not write. [`SECURITY.md`](SECURITY.md) lists
-this and the program's other limits.
+`contract` copies those commands from the plan. When a saved
+contract has a `final_verification` object with its own
+`validation_commands` list, a command added only to the
+top-level `validation_commands` is not run. Read the
+contract before you run `verify` on a plan you did not
+write. [`SECURITY.md`](SECURITY.md) lists this and the
+program's other limits.
 
 ## Not included
 
