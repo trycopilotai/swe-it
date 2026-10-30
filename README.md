@@ -7,6 +7,10 @@ committed `HEAD`. It ships one program, `swe_it.py`, that
 builds the contract, renders the dispatch prompt, and runs
 the check.
 
+[![auto-lint-pr](https://github.com/trycopilotai/swe-it/actions/workflows/auto-lint-pr.yml/badge.svg)](https://github.com/trycopilotai/swe-it/actions/workflows/auto-lint-pr.yml)
+[![check](https://github.com/trycopilotai/swe-it/actions/workflows/check.yml/badge.svg)](https://github.com/trycopilotai/swe-it/actions/workflows/check.yml)
+[![lint](https://github.com/trycopilotai/swe-it/actions/workflows/lint.yml/badge.svg)](https://github.com/trycopilotai/swe-it/actions/workflows/lint.yml)
+
 Non-m2 plans with no recognized validation get needs_human.
 
 <picture>
